@@ -1,15 +1,14 @@
 {
   "name": "holy-quran-radio-desktop",
   "productName": "Holy Quran Radio Desktop",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Holy Quran Radio Desktop App",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "publish": "electron-forge publish"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
