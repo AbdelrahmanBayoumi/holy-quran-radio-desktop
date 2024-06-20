@@ -1,8 +1,9 @@
 # 📻 Holy Quran Radio Desktop
 
-## Overview
-
 Holy Quran Radio Desktop is a simple Electron app to stream the Holy Quran radio station directly from your desktop.
+
+![image](https://github.com/AbdelrahmanBayoumi/holy-quran-radio-desktop/assets/48678280/7331097a-ce5a-4854-bba6-d6ab4bcc52d0)
+
 
 ## Features
 
