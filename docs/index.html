@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holy Quran Radio Desktop</title>
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+  </head>
+  <body
+    class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-all duration-300"
+  >
+    <div
+      class="min-h-screen flex flex-col items-center justify-center px-4 py-8"
+    >
+      <!-- Top controls -->
+      <div class="w-full max-w-2xl flex justify-between mb-8">
+        <div>
+          <button
+            id="toggle-theme"
+            class="px-3 py-1 border rounded mr-2 text-sm"
+          ></button>
+          <button id="toggle-lang" class="px-3 py-1 border rounded text-sm">
+            EN
+          </button>
+        </div>
+        <div>
+          <span
+            id="download-count"
+            class="text-sm text-gray-500 dark:text-gray-400"
+          >
+            Loading…
+          </span>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="w-full max-w-2xl text-center">
+        <h1 id="title" class="text-4xl font-bold mb-6">
+          📻 راديو القرآن الكريم للكمبيوتر
+        </h1>
+        <img
+          src="https://github.com/AbdelrahmanBayoumi/holy-quran-radio-desktop/assets/48678280/7331097a-ce5a-4854-bba6-d6ab4bcc52d0"
+          alt="App screenshot"
+          class="w-full rounded-lg shadow mb-6"
+        />
+
+        <ul id="features" class="space-y-3 mb-8 text-lg">
+          <li>🎧 بث مباشر لراديو القرآن الكريم</li>
+          <li>🖥️ يدعم أنظمة Windows, macOS, Linux</li>
+          <li>✨ واجهة سهلة الاستخدام</li>
+        </ul>
+
+        <a
+          id="download-btn"
+          href="https://github.com/AbdelrahmanBayoumi/holy-quran-radio-desktop/releases/latest/download/holy-quran-radio-desktop.exe"
+          class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded font-semibold shadow text-lg"
+        >
+          ⬇️ تحميل نسخة الويندوز
+        </a>
+
+        <footer class="mt-12 text-sm text-gray-500 dark:text-gray-400">
+          <span id="developed-by">تم التطوير بواسطة </span>
+          <a
+            id="author-link"
+            href="https://abdelrahmanbayoumi.github.io"
+            class="underline hover:text-blue-600 dark:hover:text-blue-400"
+          >
+            عبد الرحمن بيومي
+          </a>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      // Translations
+      const i18n = {
+        en: {
+          langBtn: "العربية",
+          title: "📻 Holy Quran Radio Desktop",
+          features: [
+            "🎧 Stream the Holy Quran radio station",
+            "🖥️ Cross-platform (Windows, macOS, Linux)",
+            "✨ Easy-to-use interface",
+          ],
+          downloadBtn: "⬇️ Download for Windows",
+          loading: "Loading download count…",
+          developer: "Developed by ",
+          author: "Abdelrahman Bayoumi",
+          themeLight: "🌙 Switch to Dark",
+          themeDark: "☀️ Switch to Light",
+        },
+        ar: {
+          langBtn: "EN",
+          title: "📻 راديو القرآن الكريم للكمبيوتر",
+          features: [
+            "🎧 بث مباشر لراديو القرآن الكريم",
+            "🖥️ يدعم أنظمة Windows, macOS, Linux",
+            "✨ واجهة سهلة الاستخدام",
+          ],
+          downloadBtn: "⬇️ تحميل نسخة الويندوز",
+          loading: "جاري تحميل عدد التنزيلات…",
+          developer: "تم التطوير بواسطة ",
+          author: "عبد الرحمن بيومي",
+          themeLight: "🌙 الوضع الليلي",
+          themeDark: "☀️ الوضع النهاري",
+        },
+      };
+
+      // Elements
+      const docEl = document.documentElement;
+      const btnTheme = document.getElementById("toggle-theme");
+      const btnLang = document.getElementById("toggle-lang");
+      const titleEl = document.getElementById("title");
+      const featsEl = document.getElementById("features");
+      const dlBtn = document.getElementById("download-btn");
+      const dlCountEl = document.getElementById("download-count");
+      const devByEl = document.getElementById("developed-by");
+      const authorLink = document.getElementById("author-link");
+
+      let lang = "ar";
+      let downloadCountText = null;
+
+      // Update theme-toggle to show the *action*
+      function updateThemeBtn() {
+        const isDark = docEl.classList.contains("dark");
+        const t = i18n[lang];
+        btnTheme.textContent = isDark ? t.themeDark : t.themeLight;
+      }
+
+      // Theme toggle
+      btnTheme.addEventListener("click", () => {
+        docEl.classList.toggle("dark");
+        updateThemeBtn();
+      });
+
+      // Language toggle
+      btnLang.addEventListener("click", () => {
+        lang = lang === "en" ? "ar" : "en";
+        const t = i18n[lang];
+
+        // html attributes
+        docEl.lang = lang;
+        docEl.dir = lang === "ar" ? "rtl" : "ltr";
+
+        // swap UI text
+        btnLang.textContent = t.langBtn;
+        titleEl.textContent = t.title;
+
+        // rebuild features
+        featsEl.innerHTML = "";
+        t.features.forEach((f) => {
+          const li = document.createElement("li");
+          li.textContent = f;
+          featsEl.appendChild(li);
+        });
+
+        dlBtn.textContent = t.downloadBtn;
+        devByEl.textContent = t.developer;
+        authorLink.textContent = t.author;
+        updateThemeBtn();
+
+        // restore or reset download-count
+        if (downloadCountText) {
+          const num = downloadCountText.match(/[\d,]+/)[0];
+          dlCountEl.textContent =
+            lang === "ar" ? `📥 ${num} مرات تحميل` : `📥 ${num} downloads`;
+        } else {
+          dlCountEl.textContent = t.loading;
+        }
+      });
+
+      // Initial theme button
+      updateThemeBtn();
+
+      // Fetch GitHub download count
+      fetch(
+        "https://api.github.com/repos/AbdelrahmanBayoumi/holy-quran-radio-desktop/releases/latest"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const exe = data.assets.find((a) => a.name.endsWith(".exe"));
+          const count = exe ? exe.download_count : 0;
+          const num = count.toLocaleString();
+          downloadCountText =
+            lang === "ar" ? `📥 ${num} مرات تحميل` : `📥 ${num} downloads`;
+          dlCountEl.textContent = downloadCountText;
+        })
+        .catch(() => {
+          downloadCountText =
+            lang === "ar"
+              ? "فشل في جلب عدد التنزيلات"
+              : "Failed to load download count.";
+          dlCountEl.textContent = downloadCountText;
+        });
+    </script>
+  </body>
+</html>
